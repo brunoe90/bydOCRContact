@@ -1,6 +1,5 @@
 package com.ocrcontact.byd.ocrcontact;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -8,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -64,12 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
         File direct = new File(Environment.getRootDirectory()+"/folder");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            checkSelfPermission(Manifest.permission.CAMERA);
-            checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//            checkSelfPermission(Manifest.permission.CAMERA);
+//            checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+//            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        }
 
         for (String path : paths) {
             File dir = new File(path);
@@ -236,9 +234,9 @@ public class MainActivity extends AppCompatActivity {
 
         Log.v(TAG, "OCRED TEXT: " + recognizedText);
 //        Me pinto comentarlo porque esto es para ingles
-//        if ( lang.equalsIgnoreCase("spa") ) {
-//            recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
-//        }
+        if ( lang.equalsIgnoreCase("spa") ) {
+            recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
+        }
 
         recognizedText = recognizedText.trim();
 
