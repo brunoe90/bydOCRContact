@@ -4,3 +4,10 @@
 /.idea/libraries
 .DS_Store
 /build
+/libraries
+app/build/
+OCRContact.iml
+.gradle/2.8/taskArtifacts/cache.properties.lock
+.idea/workspace.xml
+app/app.iml
+
