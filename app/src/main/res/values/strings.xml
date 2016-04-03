@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, DatumDroidOCRActivity!</string>
-    <string name="app_name">Simple Android OCR</string>
+    <string name="app_name">OCRContact</string>
     <string name="button_text">OCR!</string>
     <string name="text_hint">OCRed Text will appear here</string>
 

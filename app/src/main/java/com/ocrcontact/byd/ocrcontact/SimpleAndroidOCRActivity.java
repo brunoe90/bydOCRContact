@@ -3,14 +3,6 @@ package com.ocrcontact.byd.ocrcontact;
 /**
  * Created by bruno on 27/03/16.
  */
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.zip.GZIPInputStream;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -28,6 +20,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
+import com.ocrcontact.byd.ocrcontact.tesseract.TesseractController;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class SimpleAndroidOCRActivity extends Activity {
     public static final String PACKAGE_NAME = "com.datumdroid.android.ocr.simple";
@@ -46,7 +45,7 @@ public class SimpleAndroidOCRActivity extends Activity {
     protected EditText _field;
     protected String _path;
     protected boolean _taken;
-
+    protected TesseractController tesseractController = new TesseractController();
     protected static final String PHOTO_TAKEN = "photo_taken";
 
     @Override
