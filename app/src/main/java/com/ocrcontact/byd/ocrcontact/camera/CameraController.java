@@ -33,7 +33,7 @@ public class CameraController {
 	}
 
 	public Intent startCameraActivity(String _path) {
-		File file = new File("");
+		File file = new File(_path);
 		Uri outputFileUri = Uri.fromFile(file);
 
 		final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

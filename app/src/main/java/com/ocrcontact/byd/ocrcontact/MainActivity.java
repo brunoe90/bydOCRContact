@@ -130,11 +130,11 @@ public class MainActivity extends AppCompatActivity {
 
 	protected void onPhotoTaken() {
 		_taken = true;
-		//TODO Arreglar que el bitmap Viene vacio
+
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = 4;
 		Bitmap bitmap = BitmapFactory.decodeFile(_path, options);
-		//TODO Aca usa el bitmap y pincha :(
+
 		CameraController.getInstance().setOrientationCamera(bitmap,_path);
 
 		//Variable de texto reconocida
