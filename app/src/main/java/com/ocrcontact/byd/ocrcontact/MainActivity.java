@@ -23,7 +23,7 @@ import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/MainActivity/";
+    public String DATA_PATH = Environment.getDataDirectory().toString() + "/MainActivity/";
     public static final String lang = "spa";
     private static final String PACKAGE = "com.ocrcontact.byd.ocrcontact";
     private static final String TAG = "MainActivity.java";
@@ -46,31 +46,29 @@ public class MainActivity extends AppCompatActivity {
 		//TODO poner todo esto en la clase FilesController y crear un metodo q sea crear path o algo asi
 		//Crea archivo en la carpeta interna pero hay q acondicionar tod.o el resto del codigo
 		//funcione deacuerdo al texto
-		//		File myDir2 = new File(getFilesDir(), "tessdata");
+
+		DATA_PATH = getFilesDir().getPath();
 
         String[] paths = new String[] { DATA_PATH, DATA_PATH + "tessdata/" };
-
-        for (String path : paths) {
-            File dir = new File(path);
-            if (!dir.exists()) {
-                if (!dir.mkdirs()) {
-                    Log.v(TAG, "ERROR: Creation of directory " + path + " on sdcard failed");
-                    return;
-                } else {
-                    Log.v(TAG, "Created directory " + path + " on sdcard");
-                }
-            }
+		File dir = new File( DATA_PATH + "/tessdata/");
+		if (!dir.exists()) {
+			if (!dir.mkdirs()) {
+				Log.v(TAG, "ERROR: Creation of directory " + DATA_PATH + " on sdcard failed");
+				return;
+			} else {
+				Log.v(TAG, "Created directory " + DATA_PATH + " on sdcard");
+			}
 
         }
 
-        if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
+        if (!(new File(DATA_PATH + "/tessdata/" + lang + ".traineddata")).exists()) {
             try {
 
                 AssetManager assetManager = getAssets();
                 InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
                 //GZIPInputStream gin = new GZIPInputStream(in);
                 OutputStream out = new FileOutputStream(DATA_PATH
-                        + "tessdata/" + lang + ".traineddata");
+                        + "/tessdata/" + lang + ".traineddata");
 
                 // Transfer bytes from in to out
                 byte[] buf = new byte[1024];
@@ -96,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
     public class ButtonClickHandler implements View.OnClickListener {
         public void onClick(View view) {
             Log.v(TAG, "Starting Camera app");
-
 			startActivityForResult(CameraController.getInstance().startCameraActivity(_path), 0);
         }
     }
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
 		Log.i(TAG, "resultCode: " + resultCode);
 
-		if (resultCode == -1) {
+		if (resultCode == 0) {
 			onPhotoTaken();
 		} else {
 			Log.v(TAG, "User cancelled");
@@ -135,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 		options.inSampleSize = 4;
 		Bitmap bitmap = BitmapFactory.decodeFile(_path, options);
 
-		CameraController.getInstance().setOrientationCamera(bitmap,_path);
+		CameraController.getInstance().setOrientationCamera(bitmap, _path);
 
 		//Variable de texto reconocida
 		String recognizedText = TesseractController.getInstance().getTextcodification(DATA_PATH,lang,bitmap);
