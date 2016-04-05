@@ -3,6 +3,7 @@ package com.ocrcontact.byd.ocrcontact;
 /**
  * Created by bruno on 27/03/16.
  */
+/*
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -20,7 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
-import com.ocrcontact.byd.ocrcontact.tesseract.TesseractController;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class SimpleAndroidOCRActivity extends Activity {
+public class StandardOCRActivity_dont_Use extends Activity {
     public static final String PACKAGE_NAME = "com.datumdroid.android.ocr.simple";
     public static final String DATA_PATH = Environment
             .getExternalStorageDirectory().toString() + "/SimpleAndroidOCR/";
@@ -45,7 +45,6 @@ public class SimpleAndroidOCRActivity extends Activity {
     protected EditText _field;
     protected String _path;
     protected boolean _taken;
-    protected TesseractController tesseractController = new TesseractController();
     protected static final String PHOTO_TAKEN = "photo_taken";
 
     @Override
@@ -142,13 +141,13 @@ public class SimpleAndroidOCRActivity extends Activity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(SimpleAndroidOCRActivity.PHOTO_TAKEN, _taken);
+        outState.putBoolean(StandardOCRActivity_dont_Use.PHOTO_TAKEN, _taken);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         Log.i(TAG, "onRestoreInstanceState()");
-        if (savedInstanceState.getBoolean(SimpleAndroidOCRActivity.PHOTO_TAKEN)) {
+        if (savedInstanceState.getBoolean(StandardOCRActivity_dont_Use.PHOTO_TAKEN)) {
             onPhotoTaken();
         }
     }
@@ -241,4 +240,4 @@ public class SimpleAndroidOCRActivity extends Activity {
 
     // www.Gaut.am was here
     // Thanks for reading!
-}
+}*/

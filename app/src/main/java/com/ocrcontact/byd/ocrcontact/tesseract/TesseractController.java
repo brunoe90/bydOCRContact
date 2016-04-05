@@ -11,6 +11,20 @@ public class TesseractController {
 
 	private static final String TAG = "TessController.java";
 
+	public static TesseractController instance = null;
+
+	private TesseractController() {
+		//private empty Constructor to prevent
+		//generation of the class.
+	}
+	//Lazy creation of class
+	public static TesseractController getInstance() {
+		if(instance==null){
+			instance = new TesseractController();
+		}
+		return instance;
+	}
+
 	public String getTextcodification(String path,String lang,Bitmap imagen){
 
 		TessBaseAPI baseApi = new TessBaseAPI();
