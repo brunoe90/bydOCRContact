@@ -19,7 +19,7 @@ public class CameraController {
 	private static CameraController instance = null;
 	private static final String TAG = "CameraController.java";
 
-	//Lazy creation of class
+	// Lazy creation of class
 	private CameraController() {
 		//private empty Constructor to prevent
 		//generation of the class.
@@ -65,8 +65,6 @@ public class CameraController {
 					break;
 			}
 
-			Log.v(TAG, "Rotation: " + rotate);
-
 			if (rotate != 0) {
 
 				// Getting width & height of the given image.
@@ -88,10 +86,6 @@ public class CameraController {
 			Log.e(TAG, "Couldn't correct orientation: " + e.toString());
 		}
 
-		// _image.setImageBitmap( bitmap );
-
 	}
-
-
 
 }

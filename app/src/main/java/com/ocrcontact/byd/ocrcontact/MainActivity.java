@@ -1,5 +1,6 @@
 package com.ocrcontact.byd.ocrcontact;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ocrcontact.byd.ocrcontact.camera.CameraController;
+import com.ocrcontact.byd.ocrcontact.files.FilesController;
 import com.ocrcontact.byd.ocrcontact.tesseract.TesseractController;
 
 import java.io.File;
@@ -23,7 +25,7 @@ import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    public String DATA_PATH = Environment.getDataDirectory().toString() + "/MainActivity/";
+    public String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/MainActivity/";
     public static final String lang = "spa";
     private static final String PACKAGE = "com.ocrcontact.byd.ocrcontact";
     private static final String TAG = "MainActivity.java";
@@ -43,52 +45,41 @@ public class MainActivity extends AppCompatActivity {
         _button = (Button) findViewById(R.id.button);
         _button.setOnClickListener(new ButtonClickHandler());
 
-		//TODO poner todo esto en la clase FilesController y crear un metodo q sea crear path o algo asi
-		//Crea archivo en la carpeta interna pero hay q acondicionar tod.o el resto del codigo
-		//funcione deacuerdo al texto
-
-		DATA_PATH = getFilesDir().getPath();
-
+        /* Creamos los directorios y archivos
+        String[0] -> DATA_PATH
+        String[1] -> DATA_PATH + "tessdata/"
+        */
         String[] paths = new String[] { DATA_PATH, DATA_PATH + "tessdata/" };
-		File dir = new File( DATA_PATH + "/tessdata/");
-		if (!dir.exists()) {
-			if (!dir.mkdirs()) {
-				Log.v(TAG, "ERROR: Creation of directory " + DATA_PATH + " on sdcard failed");
-				return;
-			} else {
-				Log.v(TAG, "Created directory " + DATA_PATH + " on sdcard");
-			}
+        FilesController.getInstance().create_dir_file(paths);
 
-        }
-
-        if (!(new File(DATA_PATH + "/tessdata/" + lang + ".traineddata")).exists()) {
+        // lang.traineddata file with the app (in assets folder)
+        // You can get them at:
+        // http://code.google.com/p/tesseract-ocr/downloads/list
+        // This area needs work and optimization
+        if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
             try {
 
                 AssetManager assetManager = getAssets();
                 InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
-                //GZIPInputStream gin = new GZIPInputStream(in);
-                OutputStream out = new FileOutputStream(DATA_PATH
-                        + "/tessdata/" + lang + ".traineddata");
+                OutputStream out = new FileOutputStream(DATA_PATH + "tessdata/" + lang + ".traineddata");
 
                 // Transfer bytes from in to out
                 byte[] buf = new byte[1024];
+
                 int len;
-                //while ((lenf = gin.read(buff)) > 0) {
+
                 while ((len = in.read(buf)) > 0) {
                     out.write(buf, 0, len);
                 }
                 in.close();
-                //gin.close();
                 out.close();
-
-                Log.v(TAG, "Copied " + lang + " traineddata");
             } catch (IOException e) {
                 Log.e(TAG, "Was unable to copy " + lang + " traineddata " + e.toString());
             }
         }
 
         _path = DATA_PATH + "/ocr.jpg";
-		//TODO FIN poner todo esto en la clase FilesController y crear un metodo q sea crear path o algo asi
+
     }
 
     public class ButtonClickHandler implements View.OnClickListener {
@@ -103,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
 		Log.i(TAG, "resultCode: " + resultCode);
 
-		if (resultCode == 0) {
+		if (resultCode == -1) {
 			onPhotoTaken();
 		} else {
 			Log.v(TAG, "User cancelled");
@@ -134,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
 		CameraController.getInstance().setOrientationCamera(bitmap, _path);
 
-		//Variable de texto reconocida
+		// Variable de texto reconocida
 		String recognizedText = TesseractController.getInstance().getTextcodification(DATA_PATH,lang,bitmap);
 
 		Log.v(TAG, "OCRED TEXT: " + recognizedText);
@@ -144,13 +135,25 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		recognizedText = recognizedText.trim();
-//		Aqui se pone en el texto del OCR en la pantalla modificar funcionalidad
+
+        // Aqui se pone en el texto del OCR en la pantalla modificar funcionalidad...
 		if ( recognizedText.length() != 0 ) {
+            _field.setText("");
 			_field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
-			_field.setSelection(_field.getText().toString().length());
+			_field.setSelection(_field.getText().toString().length());      // Queda seleccionado/en foco
+
+            // Enviar al portapapeles...
+            if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboard.setText(_field.getText().toString());
+            }
+            else {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", _field.getText().toString());
+                clipboard.setPrimaryClip(clip);
+            }
 		}
 
 	}
-
 
 }

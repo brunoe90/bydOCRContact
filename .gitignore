@@ -13,5 +13,6 @@ OCRContact.iml
 app/app.iml
 app/.idea/
 app/local.properties
-
-
+*.iml
+app/gradle/*
+app/gradle*
