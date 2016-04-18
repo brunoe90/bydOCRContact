@@ -45,10 +45,6 @@ public class MainActivity extends AppCompatActivity {
         _button = (Button) findViewById(R.id.button);
         _button.setOnClickListener(new ButtonClickHandler());
 
-        /* Creamos los directorios y archivos
-        String[0] -> DATA_PATH
-        String[1] -> DATA_PATH + "tessdata/"
-        */
         String[] paths = new String[] { DATA_PATH, DATA_PATH + "tessdata/" };
         FilesController.getInstance().create_dir_file(paths);
 
